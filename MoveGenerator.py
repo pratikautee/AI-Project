@@ -1,17 +1,18 @@
-from copy import copy
+from copy import deepcopy as copy
 
 class MoveGenerator:
     def __init__(self, input_board_string):
         self.board = input_board_string.split()
-        self.numWhitePieces = 0
-        self.numBlackPieces = 0
-        self.numBlackMoves = 0
 
     def GenerateMovesOpening(self):
         return self.GenerateAdd()
     
     def GenerateMovesMidgameEndgame(self):
-        pass
+        L = list()
+        if(self.board.count('W') == 3):
+            return self.GenerateHopping()
+        else:
+            return self.GenerateMove()
 
     def GenerateAdd(self):
         L = list()
@@ -171,5 +172,19 @@ class MoveGenerator:
                     return True
         return False
 
-    def staticEstimation(self, b):
-        pass
+    def staticEstimation(self, b, mode='opening'):
+        numWhitePieces = b.count('W')
+        numBlackPieces = b.count('B')
+        numBlackMoves = 0
+        if(mode=='midgame_endgame'):
+            if(numBlackPieces<=2):
+                return 10_000
+            elif (numWhitePieces <= 2):
+                return -10_000
+            elif(numBlackMoves==0):
+                return 10_000
+            else:
+                return (1000*(numWhitePieces - numBlackPieces) - numBlackMoves)
+            
+        elif(mode == 'opening'):
+            return (numWhitePieces - numBlackPieces)
