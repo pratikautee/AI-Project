@@ -6,30 +6,28 @@ positions_evaluated = 0
 output_board_position = []
 
 def MaxMin(x, curr_depth):
+    global positions_evaluated, output_board_position
     if(curr_depth>=MAX_DEPTH):
-        global positions_evaluated
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x)
     else:
         d = curr_depth+1
         v = -math.inf
         x_children = MoveGenerator.GenerateMovesOpening(x)
-        global output_board_position
         output_board_position = x_children[0]
         for y in x_children:
             v = max(v, MinMax(y, d))
         return v
 
 def MinMax(x, curr_depth):
+    global positions_evaluated, output_board_position
     if(curr_depth>=MAX_DEPTH):
-        global positions_evaluated
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x)
     else:
         d = curr_depth+1
         v = math.inf
         x_children = MoveGenerator.GenerateMovesOpening(x)
-        global output_board_position
         output_board_position = x_children[0]
         for y in x_children:
             v = min(v, MaxMin(y, d))
