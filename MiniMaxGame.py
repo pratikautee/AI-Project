@@ -14,9 +14,11 @@ def MaxMin(x, curr_depth):
     else:
         v = -math.inf
         x_children = MoveGenerator.GenerateMovesMidgameEndgame(x)
-        output_board_position = x_children[0]
         for y in x_children:
-            v = max(v, MinMax(y, curr_depth+1))
+            v_res = MinMax(y,curr_depth+1)
+            if(v_res>v):
+                v = v_res
+                output_board_position = y
         return v
 
 def MinMax(x, curr_depth):
@@ -28,9 +30,11 @@ def MinMax(x, curr_depth):
         v = math.inf
         x_children = MoveGenerator.GenerateMovesMidgameEndgame(flip_pieces(x))
         x_children = list(map(lambda x: flip_pieces(x), x_children))
-        output_board_position = x_children[0]
         for y in x_children:
-            v = min(v, MaxMin(y, curr_depth+1))
+            v_res = MaxMin(y, curr_depth+1)
+            if(v_res<v):
+                v = v_res
+                output_board_position = y
         return v
 
 

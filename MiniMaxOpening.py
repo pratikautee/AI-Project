@@ -12,12 +12,13 @@ def MaxMin(x, curr_depth):
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x)
     else:
-        d = curr_depth+1
         v = -math.inf
         x_children = MoveGenerator.GenerateMovesOpening(x)
-        output_board_position = x_children[0]
         for y in x_children:
-            v = max(v, MinMax(y, d))
+            v_res = MinMax(y,curr_depth+1)
+            if(v_res>v):
+                v = v_res
+                output_board_position = y
         return v
 
 def MinMax(x, curr_depth):
@@ -26,13 +27,14 @@ def MinMax(x, curr_depth):
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x)
     else:
-        d = curr_depth+1
         v = math.inf
         x_children = MoveGenerator.GenerateMovesOpening(flip_pieces(x))
         x_children = list(map(lambda x: flip_pieces(x), x_children))
-        output_board_position = x_children[0]
         for y in x_children:
-            v = min(v, MaxMin(y, d))
+            v_res = MaxMin(y, curr_depth+1)
+            if(v_res<v):
+                v = v_res
+                output_board_position = y
         return v
 
 

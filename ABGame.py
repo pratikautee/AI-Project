@@ -13,12 +13,14 @@ def MaxMin(x, curr_depth, alpha, beta):
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x, mode='midgame_endgame')
     else:
-        d = curr_depth+1
         v = -math.inf
         x_children = MoveGenerator.GenerateMovesMidgameEndgame(x)
         output_board_position = x_children[0]
         for y in x_children:
-            v = max(v, MinMax(y, d, alpha, beta))
+            v_res = MinMax(y,curr_depth+1, alpha, beta)
+            if(v_res>v):
+                v = v_res
+                output_board_position = y
             if (v >= beta):
                 return v
             else:
@@ -31,13 +33,15 @@ def MinMax(x, curr_depth, alpha, beta):
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x, mode='midgame_endgame')
     else:
-        d = curr_depth+1
         v = math.inf
         x_children = MoveGenerator.GenerateMovesMidgameEndgame(flip_pieces(x))
         x_children = list(map(lambda x: flip_pieces(x), x_children))
         output_board_position = x_children[0]
         for y in x_children:
-            v = min(v, MaxMin(y, d, alpha, beta))
+            v_res = MaxMin(y, curr_depth+1, alpha, beta)
+            if(v_res<v):
+                v = v_res
+                output_board_position = y
             if(v<=alpha):
                 return v
             else:
