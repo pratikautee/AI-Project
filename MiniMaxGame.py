@@ -43,5 +43,5 @@ if __name__ == "__main__":
     estimate = MaxMin(list(input_board), 0)
     print(f'Board Position: {"".join(output_board_position)}')
     print(f'Positions evaluated by static estimation: {positions_evaluated}.')
-    print(f'MINIMAX Opening estimate: {estimate}')
+    print(f'MINIMAX estimate: {estimate}')
 
