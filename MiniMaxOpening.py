@@ -1,7 +1,9 @@
 import sys
-import os
 from MoveGenerator import MoveGenerator
 import math
+
+positions_evaluated = 0
+output_board_position = []
 
 def MaxMin(x, curr_depth):
     if(curr_depth>=MAX_DEPTH):
@@ -36,15 +38,12 @@ def MinMax(x, curr_depth):
 
 
 if __name__ == "__main__":
-    positions_evaluated = 0
-    output_board_position = []
-    MAX_DEPTH = 2
+    MAX_DEPTH = 1
     input_board = open(sys.argv[1]).readline().strip()
     if(sys.argv[3]):
         MAX_DEPTH = int(sys.argv[3])
     estimate = MaxMin(list(input_board), 0)
-
-print(f'Board Position: {"".join(output_board_position)}')
-print(f'Positions evaluated by static estimation: {positions_evaluated}.')
-print(f'MINIMAX Opening estimate: {estimate}')
+    print(f'Board Position: {"".join(output_board_position)}')
+    print(f'Positions evaluated by static estimation: {positions_evaluated}.')
+    print(f'MINIMAX Opening estimate: {estimate}')
 

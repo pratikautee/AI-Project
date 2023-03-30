@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 
 class MoveGenerator:
    
@@ -10,9 +10,9 @@ class MoveGenerator:
     def GenerateMovesMidgameEndgame(board):
         L = list()
         if(board.count('W') == 3):
-            return MoveGenerator.GenerateHopping()
+            return MoveGenerator.GenerateHopping(board)
         else:
-            return MoveGenerator.GenerateMove()
+            return MoveGenerator.GenerateMove(board)
 
     @staticmethod
     def GenerateAdd(board):
@@ -62,15 +62,18 @@ class MoveGenerator:
     
     @staticmethod
     def GenerateRemove(board, L):
+        L_copy = copy(L)
+        positionAddedFlag = False
         for location,_ in enumerate(board):
             if(board[location]=='B'):
-                if( not MoveGenerator.closeMill(location, board)):
+                if(MoveGenerator.closeMill(location, board) == False):
                     b = copy(board)
                     b[location] = 'x'
-                    L.append(b)
-        if(len(L)==0):
-            L.append(board)
-        return L
+                    L_copy.append(b)
+                    positionAddedFlag = True
+        if(positionAddedFlag == False):
+            L_copy.append(board)
+        return L_copy
 
     @staticmethod
     def neighbors(location):
@@ -176,13 +179,24 @@ class MoveGenerator:
                 if(MoveGenerator.__comparePieces(b, 19, 20, C) or MoveGenerator.__comparePieces(b, 15, 18, C) or  MoveGenerator.__comparePieces(b, 12, 2, C)):
                     return True
         return False
+    
+    @staticmethod
+    def __getNumBlackMoves(b):
+        flip_dict = {
+                'W': 'B',
+                'B': 'W',
+                'x': 'x'
+            }
+        b_copy = list(map(lambda x: flip_dict[x], b))
+        L = MoveGenerator.GenerateMovesMidgameEndgame(b_copy)
+        return len(L)
 
     @staticmethod
     def staticEstimation(b, mode='opening'):
         numWhitePieces = b.count('W')
         numBlackPieces = b.count('B')
-        numBlackMoves = 0
         if(mode=='midgame_endgame'):
+            numBlackMoves = MoveGenerator.__getNumBlackMoves(b)
             if(numBlackPieces<=2):
                 return 10_000
             elif (numWhitePieces <= 2):
