@@ -1,6 +1,7 @@
 import sys
 from MoveGenerator import MoveGenerator
 import math
+from utils import flip_pieces
 
 positions_evaluated = 0
 output_board_position = []
@@ -25,7 +26,8 @@ def MinMax(x, curr_depth):
         return MoveGenerator.staticEstimation(x, mode='midgame_endgame')
     else:
         v = math.inf
-        x_children = MoveGenerator.GenerateMovesMidgameEndgame(x)
+        x_children = MoveGenerator.GenerateMovesMidgameEndgame(flip_pieces(x))
+        x_children = list(map(lambda x: flip_pieces(x), x_children))
         output_board_position = x_children[0]
         for y in x_children:
             v = min(v, MaxMin(y, curr_depth+1))

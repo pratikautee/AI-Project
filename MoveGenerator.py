@@ -1,5 +1,5 @@
-from copy import copy, deepcopy
-
+from copy import copy
+from utils import flip_pieces
 class MoveGenerator:
    
     @staticmethod
@@ -182,12 +182,7 @@ class MoveGenerator:
     
     @staticmethod
     def __getNumBlackMoves(b):
-        flip_dict = {
-                'W': 'B',
-                'B': 'W',
-                'x': 'x'
-            }
-        b_copy = list(map(lambda x: flip_dict[x], b))
+        b_copy = flip_pieces(b)
         L = MoveGenerator.GenerateMovesMidgameEndgame(b_copy)
         return len(L)
 

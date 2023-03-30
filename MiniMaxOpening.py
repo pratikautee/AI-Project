@@ -1,6 +1,7 @@
 import sys
 from MoveGenerator import MoveGenerator
 import math
+from utils import flip_pieces
 
 positions_evaluated = 0
 output_board_position = []
@@ -27,7 +28,8 @@ def MinMax(x, curr_depth):
     else:
         d = curr_depth+1
         v = math.inf
-        x_children = MoveGenerator.GenerateMovesOpening(x)
+        x_children = MoveGenerator.GenerateMovesOpening(flip_pieces(x))
+        x_children = list(map(lambda x: flip_pieces(x), x_children))
         output_board_position = x_children[0]
         for y in x_children:
             v = min(v, MaxMin(y, d))
