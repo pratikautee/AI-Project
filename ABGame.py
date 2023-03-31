@@ -58,3 +58,6 @@ if __name__ == "__main__":
     print(f'Positions evaluated by static estimation: {positions_evaluated}.')
     print(f'MINIMAX estimate: {estimate}')
 
+    with open(sys.argv[2], 'w') as output_board:
+        output_board.write("".join(output_board_position))
+

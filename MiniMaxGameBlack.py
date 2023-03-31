@@ -22,3 +22,6 @@ if __name__ == "__main__":
     print(f'Board Position: {"".join(output_board_position_flipped)}')
     print(f'Positions evaluated by static estimation: {MiniMaxGame.positions_evaluated}.')
     print(f'MINIMAX estimate: {estimate}')
+
+    with open(sys.argv[2], 'w') as output_board:
+        output_board.write("".join(output_board_position_flipped))
