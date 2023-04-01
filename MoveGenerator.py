@@ -203,3 +203,43 @@ class MoveGenerator:
             
         elif(mode == 'opening'):
             return (numWhitePieces - numBlackPieces)
+        
+    @staticmethod
+    def staticEstimationV2(b, mode='opening'):
+        # Corners : 0,2,3,5,6,7,13,15,16,18,19,21
+        numWhitePiecesAtCorners = 0
+        numBlackPiecesAtCorners = 0
+
+        numOfBlackPiecesBlocked = 0
+        numOfWhitePiecesBlocked = 0
+
+        for index,piece in enumerate(b):
+            idxToPiece = list(map(lambda x: b[x], MoveGenerator.neighbors(index)))
+            if (piece == 'B'):
+                if idxToPiece.count('W') >= 2:
+                    numOfBlackPiecesBlocked+=1
+            if (piece == 'W'):
+                if idxToPiece.count('B') >=2:
+                    numOfWhitePiecesBlocked+=1
+
+            if index in [0,2,3,5,6,7,13,15,16,18,19,21]:
+                if piece == 'W':
+                    numWhitePiecesAtCorners+=1
+                else:
+                    numBlackPiecesAtCorners+=1
+            
+        if(mode=='midgame_endgame'):
+            numWhitePieces = b.count('W')
+            numBlackPieces = b.count('B')
+            numBlackMoves = MoveGenerator.__getNumBlackMoves(b)
+            if(numOfWhitePiecesBlocked > 4):
+                return -12
+            elif (numOfBlackPiecesBlocked > 4):
+                return 12
+            elif(numBlackMoves==0):
+                return 12
+            else:
+                return (numOfBlackPiecesBlocked + numWhitePiecesAtCorners) - (numOfWhitePiecesBlocked + numBlackPiecesAtCorners)
+            
+        elif(mode == 'opening'):
+            return (numWhitePiecesAtCorners+numOfBlackPiecesBlocked) - (numBlackPiecesAtCorners+numOfWhitePiecesBlocked)
