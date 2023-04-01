@@ -22,7 +22,7 @@ def MaxMin(x, curr_depth):
         return v
 
 def MinMax(x, curr_depth):
-    global positions_evaluated, output_board_position
+    global positions_evaluated
     if(curr_depth>=MAX_DEPTH):
         positions_evaluated+=1
         return MoveGenerator.staticEstimation(x, mode='midgame_endgame')
@@ -34,7 +34,6 @@ def MinMax(x, curr_depth):
             v_res = MaxMin(y, curr_depth+1)
             if(v_res<v):
                 v = v_res
-                output_board_position = y
         return v
 
 
