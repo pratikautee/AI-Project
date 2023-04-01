@@ -55,7 +55,7 @@ if __name__ == "__main__":
     estimate = MaxMin(list(input_board), 0, alpha=-math.inf, beta=math.inf)
     print(f'Board Position: {"".join(output_board_position)}')
     print(f'Positions evaluated by static estimation: {positions_evaluated}.')
-    print(f'MINIMAX estimate: {estimate}')
+    print(f'AB estimate: {estimate}')
 
     with open(sys.argv[2], 'w') as output_board:
         output_board.write("".join(output_board_position))
