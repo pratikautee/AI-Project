@@ -1,4 +1,4 @@
-from copy import copy
+from copy import deepcopy as copy
 from utils import flip_pieces
 class MoveGenerator:
    
