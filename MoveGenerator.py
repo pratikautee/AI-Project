@@ -213,6 +213,9 @@ class MoveGenerator:
         numOfBlackPiecesBlocked = 0
         numOfWhitePiecesBlocked = 0
 
+        numWhitePieces = b.count('W')
+        numBlackPieces = b.count('B')
+
         for index,piece in enumerate(b):
             idxToPiece = list(map(lambda x: b[x], MoveGenerator.neighbors(index)))
             if (piece == 'B'):
@@ -229,17 +232,15 @@ class MoveGenerator:
                     numBlackPiecesAtCorners+=1
             
         if(mode=='midgame_endgame'):
-            numWhitePieces = b.count('W')
-            numBlackPieces = b.count('B')
             numBlackMoves = MoveGenerator.__getNumBlackMoves(b)
-            if(numOfWhitePiecesBlocked > 4):
-                return -12
-            elif (numOfBlackPiecesBlocked > 4):
-                return 12
+            if(numOfWhitePiecesBlocked >= numOfBlackPiecesBlocked or numBlackPieces<=2):
+                return 1
+            elif (numOfWhitePiecesBlocked < numOfBlackPiecesBlocked or numWhitePieces<=2):
+                return -1
             elif(numBlackMoves==0):
-                return 12
+                return 1
             else:
-                return (numOfBlackPiecesBlocked + numWhitePiecesAtCorners) - (numOfWhitePiecesBlocked + numBlackPiecesAtCorners)
+                return 1000*(numOfBlackPiecesBlocked + numWhitePiecesAtCorners) - (numOfWhitePiecesBlocked + numBlackPiecesAtCorners + numBlackMoves)
             
         elif(mode == 'opening'):
-            return (numWhitePiecesAtCorners+numOfBlackPiecesBlocked) - (numBlackPiecesAtCorners+numOfWhitePiecesBlocked)
+            return (numWhitePieces+ numWhitePiecesAtCorners+numOfBlackPiecesBlocked) - (numBlackPieces+numBlackPiecesAtCorners+numOfWhitePiecesBlocked)
